@@ -1,5 +1,5 @@
-from Tkinter import *
-import tkMessageBox
+from tkinter import *
+from tkinter import messagebox
 import sys
 
 
@@ -23,9 +23,9 @@ class TicTacToe(Frame):
         self.buttons = []
 
     def setup(self):
-        for x in xrange(0, 3):
+        for x in range(0, 3):
             Grid.rowconfigure(self, x, weight=1)
-            for y in xrange(0, 3):
+            for y in range(0, 3):
                 Grid.columnconfigure(self, y, weight=1)
                 button = Button(self)
                 button.pack()
@@ -47,7 +47,7 @@ class TicTacToe(Frame):
             if val in x:
                 if self.board[x[0]] == self.turn and self.board[x[1]] == self.turn and self.board[x[2]] == self.turn:
                     player = ('X' if self.turn == 1 else 'O')
-                    option = tkMessageBox.askyesno('%s WINS!' % player, "%s has won the game.\nWould you like to play again?" % player)
+                    option = messagebox.askyesno('%s WINS!' % player, "%s has won the game.\nWould you like to play again?" % player)
                     if not option:
                         sys.exit()
                     self.reset()
