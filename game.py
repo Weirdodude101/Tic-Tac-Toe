@@ -1,4 +1,7 @@
 from Tkinter import *
+import tkMessageBox
+import sys
+
 
 class TicTacToe(Frame):
     def __init__(self, root):
@@ -12,6 +15,10 @@ class TicTacToe(Frame):
             0, 0, 0,
             0, 0, 0
         ]
+
+        self.winCombos = [[0,1,2],[3,4,5],[6,7,8],
+                          [0,3,6],[1,4,7],[2,5,8],
+                          [0,4,8],[2,4,6]]
 
         self.buttons = []
 
@@ -32,7 +39,27 @@ class TicTacToe(Frame):
         if self.board[val] == 0:
             self.buttons[val].configure(text=('X' if self.turn == 1 else 'O'))
             self.board[val] = self.turn
+            self.checkWin(val)
             self.turn = (self.turn + 1 if self.turn == 1 else self.turn - 1)
+
+    def checkWin(self, val):
+        for x in self.winCombos:
+            if val in x:
+                if self.board[x[0]] == self.turn and self.board[x[1]] == self.turn and self.board[x[2]] == self.turn:
+                    player = ('X' if self.turn == 1 else 'O')
+                    option = tkMessageBox.askyesno('%s WINS!' % player, "%s has won the game.\nWould you like to play again?" % player)
+                    if not option:
+                        sys.exit()
+                    self.reset()
+
+    def reset(self):
+        for x in range(0,len(self.board)):
+            self.board[x] = 0
+            self.buttons[x].configure(text='')
+            self.turn = (self.turn + 1 if self.turn == 1 else self.turn - 1)
+
+
+
 
 root = Tk()
 
