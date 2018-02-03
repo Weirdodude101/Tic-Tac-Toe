@@ -9,7 +9,7 @@ class TicTacToe(Frame):
         self.grid(row=0, column=0, sticky=N+S+E+W)
 
         self.turn = 1
-
+        self.round = 0
         self.board = [
             0, 0, 0,
             0, 0, 0,
@@ -40,23 +40,33 @@ class TicTacToe(Frame):
             self.buttons[val].configure(text=('X' if self.turn == 1 else 'O'))
             self.board[val] = self.turn
             self.checkWin(val)
+            self.round += 1
             self.turn = (self.turn + 1 if self.turn == 1 else self.turn - 1)
 
     def checkWin(self, val):
+        option = None
         for x in self.winCombos:
             if val in x:
                 if self.board[x[0]] == self.turn and self.board[x[1]] == self.turn and self.board[x[2]] == self.turn:
                     player = ('X' if self.turn == 1 else 'O')
                     option = messagebox.askyesno('%s WINS!' % player, "%s has won the game.\nWould you like to play again?" % player)
+                else:
+                    if self.round >= 9:
+                        option = messagebox.askyesno('TIE!', "There has been a tie\nWould you like to play again?")
+
+                if option != None:
                     if not option:
                         sys.exit()
                     self.reset()
+
+
 
     def reset(self):
         for x in range(0,len(self.board)):
             self.board[x] = 0
             self.buttons[x].configure(text='')
             self.turn = (self.turn + 1 if self.turn == 1 else self.turn - 1)
+            self.round = 0
 
 
 
